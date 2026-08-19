@@ -1,0 +1,11 @@
+# MSIC-local deploy tooling - contains internal host/container names and local
+# paths; must NOT be published to the public fork.
+deploy_msic.sh
+rollback_msic.sh
+
+# backups / build artifacts
+*.msic.bak
+*.bak
+*.orig
+*.tar.gz
+*.tgz
