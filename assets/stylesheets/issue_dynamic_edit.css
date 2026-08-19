@@ -184,33 +184,41 @@ body.controller-issues.action-show .dynamicEditField .check_box_group {
 /*
  * MSIC customization
  * Render the DESCRIPTION inline editor in the normal document flow instead of a
- * floating "popup card" above the text. Closed state is left untouched (absolute +
- * opacity 0) so CKEditor still initializes at full size; only the open state is
- * switched to static in-flow. Attribute dropdowns keep their compact popover look.
+ * floating "popup card" above the text.
+ *
+ * IMPORTANT: the RedmineX theme (000_redmine_x_ux_upgrade) forces
+ *   .dynamicEditField { position: absolute !important; top: -24px; width: max-content !important; }
+ * so we MUST use !important here as well. Our selector
+ * (.issue.details .description .dynamicEditField.open) has higher specificity than
+ * the theme's base rule (.dynamicEditField), so it wins regardless of load order.
+ *
+ * Only the OPEN state is switched to static/in-flow; the CLOSED state stays
+ * absolute (opacity 0, pointer-events none) so CKEditor still initializes at full
+ * size and clicks pass through to the description for the dblclick trigger.
+ * Attribute dropdowns keep their compact popover look.
  */
-body.controller-issues.action-show .description .dynamicEditField.open {
-	position: static;
-	display: block;
-	width: 100%;
-	box-sizing: border-box;
-	white-space: normal;
-	background: transparent;
-	box-shadow: none;
-	border-radius: 0;
-	bottom: auto;
-	margin: 8px 0 0;
-	padding: 0;
-	resize: none;
-	overflow: visible;
+body.controller-issues.action-show .issue.details .description .dynamicEditField.open {
+	position: static !important;
+	display: block !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+	left: auto !important;
+	top: auto !important;
+	bottom: auto !important;
+	min-height: 0 !important;
+	margin: 8px 0 0 !important;
+	padding: 0 !important;
+	white-space: normal !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	border-radius: 0 !important;
+	resize: none !important;
+	overflow: visible !important;
 }
 
 /* Make the CKEditor / textarea span the full description width when editing */
-body.controller-issues.action-show .description .dynamicEditField.open .cke,
-body.controller-issues.action-show .description .dynamicEditField.open textarea {
+body.controller-issues.action-show .issue.details .description .dynamicEditField.open .cke,
+body.controller-issues.action-show .issue.details .description .dynamicEditField.open textarea {
 	width: 100% !important;
-}
-
-/* Push the confirm/cancel buttons onto their own line below the editor */
-body.controller-issues.action-show .description .dynamicEditField.open button.action {
-	margin: 8px 8px 0 0;
 }

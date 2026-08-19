@@ -198,7 +198,7 @@ const cloneEditForm = function(){
 document.querySelector('body').addEventListener(_CONF_LISTENER_TYPE_VALUE,
  	function(e){
 		let is_attribute = e.target.matches('div.issue.details .attributes .attribute .' + _CONF_LISTENER_TARGET) || e.target.closest('div.issue.details .attributes .attribute .' + _CONF_LISTENER_TARGET);
-		let is_description = e.target.matches('div.issue.details div.description > p') || e.target.closest('div.issue.details div.description > p');
+		let is_description = e.target.closest('div.issue.details div.description');
 		let is_subject = e.target.matches('div.issue.details div.subject') || e.target.closest('div.issue.details div.subject');
 		if(is_attribute || is_description || is_subject ){
 			if(e.target.closest('.dynamicEditField')) return; /* We're already into a dynamic field, ignore */
@@ -215,7 +215,7 @@ document.querySelector('body').addEventListener(_CONF_LISTENER_TYPE_VALUE,
 /* Perform action on .iconEdit (display edit form) */
 document.querySelector('body').addEventListener(_CONF_LISTENER_TYPE_ICON, function(e){
 	let is_attribute = e.target.matches('div.issue.details .attributes .attribute .' + _CONF_LISTENER_TARGET) || e.target.closest('div.issue.details .attributes .attribute .' + _CONF_LISTENER_TARGET);
-	let is_description = e.target.matches('div.issue.details div.description > p') || e.target.closest('div.issue.details div.description > p');
+	let is_description = e.target.closest('div.issue.details div.description');
 	let is_subject = e.target.matches('div.issue.details div.subject') || e.target.closest('div.issue.details div.subject');
 	if(e.target.matches('.iconEdit') || e.target.closest('.iconEdit')){
 		document.querySelectorAll('.dynamicEditField').forEach(function(elt){ elt.classList.remove('open'); });
