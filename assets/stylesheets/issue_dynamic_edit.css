@@ -180,3 +180,37 @@ body.controller-issues.action-show .dynamicEditField .check_box_group {
 		padding: 10px;
 	}
 }
+
+/*
+ * MSIC customization
+ * Render the DESCRIPTION inline editor in the normal document flow instead of a
+ * floating "popup card" above the text. Closed state is left untouched (absolute +
+ * opacity 0) so CKEditor still initializes at full size; only the open state is
+ * switched to static in-flow. Attribute dropdowns keep their compact popover look.
+ */
+body.controller-issues.action-show .description .dynamicEditField.open {
+	position: static;
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	white-space: normal;
+	background: transparent;
+	box-shadow: none;
+	border-radius: 0;
+	bottom: auto;
+	margin: 8px 0 0;
+	padding: 0;
+	resize: none;
+	overflow: visible;
+}
+
+/* Make the CKEditor / textarea span the full description width when editing */
+body.controller-issues.action-show .description .dynamicEditField.open .cke,
+body.controller-issues.action-show .description .dynamicEditField.open textarea {
+	width: 100% !important;
+}
+
+/* Push the confirm/cancel buttons onto their own line below the editor */
+body.controller-issues.action-show .description .dynamicEditField.open button.action {
+	margin: 8px 8px 0 0;
+}
