@@ -224,6 +224,17 @@ body.controller-issues.action-show .issue.details .description .dynamicEditField
 }
 
 /*
+ * "Edit in place" (MS Planner style): the plugin appends the edit field at the END
+ * of .description (after the rendered text #issue_description_wiki), so the editor
+ * otherwise opens BELOW the text. While editing, hide the rendered text so the
+ * editor takes its place right under the "Description" label.
+ * Uses :has() (all current evergreen browsers support it).
+ */
+body.controller-issues.action-show .issue.details .description:has(.dynamicEditField.open) #issue_description_wiki {
+	display: none !important;
+}
+
+/*
  * We tag cloned <select>s with .select2-hidden-accessible (in JS) to keep
  * redmine_searchable_selectbox / select2 from adding a duplicate widget. That class
  * normally visually hides the element, so re-show it as a plain native select here
