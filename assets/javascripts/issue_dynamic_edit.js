@@ -113,6 +113,18 @@ const getEditFormHTML = function(attribute){
 		btn_refuse.classList.add('action', 'refuse');
 		btn_refuse.innerHTML = SVG_CANCEL;
 		wrapper.insertBefore(btn_refuse, null);
+
+		/* Compatibility with redmine_searchable_selectbox (select2):
+		 * its replaceSelect2() grabs every <select> not marked .select2-hidden-accessible
+		 * and adds a second (select2) widget next to our cloned native select -> two fields.
+		 * Mark cloned selects with that class so select2 skips them, and drop any select2
+		 * container that got cloned in. The native <select> stays fully functional. */
+		wrapper.querySelectorAll('.select2-container').forEach(function(el){ el.remove(); });
+		wrapper.querySelectorAll('select').forEach(function(sel){
+			sel.classList.add('select2-hidden-accessible');
+			sel.removeAttribute('data-select2-id');
+		});
+
 		return wrapper;
 	}
 
