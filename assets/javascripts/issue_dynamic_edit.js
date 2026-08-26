@@ -181,10 +181,26 @@ const cloneEditForm = function(){
 
   		if (
 				typeof(CKEDITOR) === "object" &&
-				typeof(CKEDITOR.instances['issue_description'] !== "undefined") &&
+				typeof(CKEDITOR.instances['issue_description']) !== "undefined" &&
 				typeof(CKEDITOR.instances['issue_description'].getData) === typeof(Function)
 		) {
-			const cfg = CKEDITOR.instances['issue_description'].config;
+			/* Clone the config instead of reusing the live reference so "cfg.height = 100"
+			 * below doesn't leak into the original instance. CKEDITOR also deletes/normalizes
+			 * config.toolbar (and toolbarLocation) off a live instance's .config once its
+			 * toolbar plugin has consumed them at init time, so cloning those specific keys
+			 * from an already-initialized instance reads back undefined/stale and CKEditor
+			 * silently falls back to its own full default toolbar. Use the admin-configured
+			 * values shipped server-side (details_issue_hooks.rb) instead, so this popup
+			 * always matches the real CKEditor setting. */
+			const cfg = Object.assign({}, CKEDITOR.instances['issue_description'].config);
+			if (typeof _CKEDITOR_TOOLBAR !== "undefined" && Array.isArray(_CKEDITOR_TOOLBAR) && _CKEDITOR_TOOLBAR.length) {
+				cfg.toolbar = _CKEDITOR_TOOLBAR.map((group) => Array.isArray(group) ? group.slice() : group);
+			} else if (Array.isArray(cfg.toolbar)) {
+				cfg.toolbar = cfg.toolbar.map((group) => Array.isArray(group) ? group.slice() : group);
+			}
+			if (typeof _CKEDITOR_TOOLBAR_LOCATION !== "undefined" && _CKEDITOR_TOOLBAR_LOCATION) {
+				cfg.toolbarLocation = _CKEDITOR_TOOLBAR_LOCATION;
+			}
 			cfg.height = 100;
 			CKEDITOR.replace("issue_description_dynamic", cfg)
 		}else if (typeof(jsToolBar) === typeof(Function)) {

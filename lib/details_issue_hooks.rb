@@ -32,6 +32,16 @@ class DetailsIssueHooks < Redmine::Hook::ViewListener
     content << " const _TXT_CONFLICT_TXT = \"" + l(:ide_txt_notice_conflict_text) + "\";\n"
     content << " const _TXT_CONFLICT_LINK = \"" + l(:ide_txt_notice_conflict_link) + "\";\n"
     content << " const _COMMENTS_IN_REVERSE_ORDER = #{User.current.wants_comments_in_reverse_order? ? 'true' : 'false'};\n"
+    if defined?(RedmineCkeditor) && RedmineCkeditor.enabled?
+      # CKEDITOR deletes/normalizes config.toolbar off an editor's live .config
+      # once its toolbar plugin has consumed it at init time, so cloning the
+      # toolbar from an already-initialized instance (CKEDITOR.instances[...].config)
+      # reads back undefined and CKEditor silently falls back to its own full
+      # default toolbar. Ship the admin-configured toolbar straight from Settings
+      # instead, so the dynamic-edit popup always matches it.
+      content << " const _CKEDITOR_TOOLBAR = #{RedmineCkeditorSetting.toolbar.to_json};\n"
+      content << " const _CKEDITOR_TOOLBAR_LOCATION = #{RedmineCkeditorSetting.toolbar_location.to_json};\n"
+    end
     content << "</script>\n"
     content << "<style>/* PRINT MEDIAQUERY */\n"
     content << "@media print {\n"

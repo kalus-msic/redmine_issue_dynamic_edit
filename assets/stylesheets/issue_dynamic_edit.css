@@ -199,7 +199,12 @@ body.controller-issues.action-show .dynamicEditField .check_box_group {
  */
 body.controller-issues.action-show .issue.details .description .dynamicEditField.open {
 	position: static !important;
-	display: block !important;
+	/* flow-root (not block): the RedmineX theme floats the confirm/discard
+	 * buttons right (.description .dynamicEditField button { float:right }). A
+	 * block parent does not contain floats, so with a block-level editor (the
+	 * Quill wrapper) the buttons overflow below and overlap the next section
+	 * (e.g. the quick_comment box). A block formatting context contains them. */
+	display: flow-root !important;
 	width: 100% !important;
 	max-width: 100% !important;
 	box-sizing: border-box !important;
